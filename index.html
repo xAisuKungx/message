@@ -57,7 +57,8 @@
     object-fit: contain;
     margin-top: 1vw;
     border-radius: 2vw;
-    transition: opacity 0.4s ease-in-out;
+    /* ปิดการเฟดเพื่อให้ภาพเปลี่ยนทันที */
+    transition: none;
   }
 
   button {
@@ -156,12 +157,10 @@
       nextBtn.style.display = current === messages.length - 1 ? "none" : "inline-block";
     }
 
+    // 🔹 เปลี่ยนภาพทันที ไม่ดีเลย์ ไม่เฟด
     function updateGif() {
-      messageGif.style.opacity = 0;
-      setTimeout(() => {
-        messageGif.src = gifs[current];
-        messageGif.style.opacity = 1;
-      }, 200);
+      messageGif.style.opacity = 1;
+      messageGif.src = gifs[current];
     }
 
     nextBtn.addEventListener("click", () => {
