@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<title>ข้อความถึงเด็กอ้วน</title>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #fff0f5;
+    font-family: 'Patrick Hand', cursive;
+    text-align: center;
+  }
+
+  .message-box {
+    background: #fff8dc;
+    padding: 5vw;
+    border-radius: 5vw;
+    box-shadow: 0 0.5vw 1.5vw rgba(0,0,0,0.2);
+    width: calc(100vw - 2vw);
+    max-width: 500px;
+    transition: transform 0.2s;
+  }
+
+  @media (hover: hover) {
+    .message-box:hover {
+      transform: translateY(-0.5vw);
+    }
+  }
+
+  h1 {
+    font-size: 6vw;
+    color: #ff69b4;
+    margin-bottom: 3vw;
+  }
+
+  p {
+    font-size: 4.5vw;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    color: #8b4513;
+    margin-bottom: 1vw;
+  }
+
+  img.message-gif {
+    width: 100%;
+    max-height: 250px;
+    object-fit: contain;
+    margin-top: 1vw;
+    border-radius: 2vw;
+    transition: opacity 0.4s ease-in-out;
+  }
+
+  button {
+    background: #ffb6c1;
+    color: #fff;
+    border: none;
+    padding: 2vw 4vw;
+    border-radius: 3vw;
+    cursor: pointer;
+    font-size: 4vw;
+    margin: 2vw 1vw 0 1vw;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  button:hover {
+    transform: scale(1.1);
+    background: #ff69b4;
+  }
+
+  #prevBtn {
+    background: #ffe4e1;
+    color: #ff69b4;
+  }
+
+  #prevBtn:hover {
+    background: #ffb6c1;
+  }
+
+  @media (min-width: 768px) {
+    h1 { font-size: 28px; }
+    p { font-size: 20px; }
+    button { font-size: 16px; padding: 10px 25px; border-radius: 15px; }
+    .message-box { padding: 30px; border-radius: 25px; }
+    img.message-gif { max-height: 300px; border-radius: 15px; margin-top: 0.5vw; }
+  }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 9vw; }    
+    p { font-size: 7vw; }     
+    button { font-size: 7vw; padding: 4vw 7vw; border-radius: 5vw; }
+    img.message-gif { max-height: 200px; border-radius: 5vw; margin-top: 1vw; }
+  }
+</style>
+</head>
+<body>
+  <div class="message-box">
+    <h1>🤍ข้อความถึงเด็กอ้วน🤍</h1>
+    <p id="message"></p>
+    <img id="messageGif" class="message-gif" src="1.gif" alt="gif">
+    <div>
+      <button id="prevBtn">⬅️</button>
+      <button id="nextBtn">➡️</button>
+    </div>
+  </div>
+
+  <script>
+    const messages = [
+      "หวัดดีงับเด็กอ้วน",
+      "ดีใจที่ได้รู้จักหนูนะ 😊",
+      "ขอบคุณที่ยังอยุ่คุยกับพี่ทุกวัน อาจจะนอยกันบ้างแต่ไม่เป็นไรนะ",
+      "อยากให้รู้ว่าพี่จะอยู่ข้าง ๆ หนูเสมอ 💕",
+      "ดูแลตัวเองดี ๆ นะ ไม่งั้นพี่จะต้องห่วงมากกว่านี้แน่ 😘",
+      "รักอ้วนนะงับ ❤️"
+    ];
+
+    const gifs = [
+      "1.gif",
+      "2.gif",
+      "3.gif",
+      "4.gif",
+      "5.gif",
+      "6.gif"
+    ];
+
+    let current = 0;
+    const messageEl = document.getElementById("message");
+    const messageGif = document.getElementById("messageGif");
+    const nextBtn = document.getElementById("nextBtn");
+    const prevBtn = document.getElementById("prevBtn");
+    let typingInterval;
+
+    function typeMessage(text) {
+      clearInterval(typingInterval);
+      messageEl.textContent = "";
+      let i = 0;
+      typingInterval = setInterval(() => {
+        messageEl.textContent += text[i];
+        i++;
+        if (i >= text.length) clearInterval(typingInterval);
+      }, 50);
+    }
+
+    function updateButtons() {
+      // หน้าแรกซ่อน prev, หน้าสุดท้ายซ่อน next
+      prevBtn.style.display = current === 0 ? "none" : "inline-block";
+      nextBtn.style.display = current === messages.length - 1 ? "none" : "inline-block";
+    }
+
+    function updateGif() {
+      messageGif.style.opacity = 0;
+      setTimeout(() => {
+        messageGif.src = gifs[current];
+        messageGif.style.opacity = 1;
+      }, 200);
+    }
+
+    nextBtn.addEventListener("click", () => {
+      if (current < messages.length - 1) {
+        current++;
+        typeMessage(messages[current]);
+        updateGif();
+        updateButtons();
+      }
+    });
+
+    prevBtn.addEventListener("click", () => {
+      if (current > 0) {
+        current--;
+        typeMessage(messages[current]);
+        updateGif();
+        updateButtons();
+      }
+    });
+
+    // เริ่มต้น
+    typeMessage(messages[current]);
+    updateGif();
+    updateButtons();
+  </script>
+</body>
+</html>
